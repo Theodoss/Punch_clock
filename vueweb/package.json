@@ -5,17 +5,27 @@
   "contributors": ["Mengnan Wu"],
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "start": "npm run dev",
+    "lint": "eslint --ext .js,.vue src",
+    "build": "node build/build.js",
+    "build-report": "npm run build --report"
   },
   "dependencies": {
-    "core-js": "^3.8.3",
-    "firebase": "^10.5.0",
-    "vue": "^2.6.14",
-    "vue-router": "^3.5.1",
-    "vuefire": "^3.1.17",
-    "vuex": "^3.6.2"
+    "@fullcalendar/core": "^4.1.0",
+    "@fullcalendar/daygrid": "^4.1.0",
+    "@fullcalendar/interaction": "^4.1.0",
+    "@fullcalendar/moment": "^4.1.0",
+    "@fullcalendar/timegrid": "^4.1.0",
+    "@fullcalendar/vue": "^4.1.1",
+    "axios": "^0.18.0",
+    "element-ui": "^2.8.2",
+    "moment": "^2.24.0",
+    "vue": "^2.5.2",
+    "vue-router": "^3.0.6",
+    "vue-toasted": "^1.1.27",
+    "vuetify": "^1.5.14",
+    "vuex": "^3.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
@@ -46,6 +56,7 @@
   "browserslist": [
     "> 1%",
     "last 2 versions",
-    "not dead"
+    "not dead",
+    "not ie <= 8"
   ]
 }
