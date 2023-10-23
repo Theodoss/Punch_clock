@@ -13,7 +13,7 @@
 </template>
 
 <script>
-  import {login,getUserByName} from '@/api/user'
+  import {login} from '@/api/login'
   export default {
     name: 'Login',
     data(){

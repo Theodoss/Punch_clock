@@ -2,9 +2,10 @@ import { Message } from 'element-ui'
 const axios=require('axios')
 // create an axios instance
 const service = axios.create({
-  baseURL: "http://localhost:8082/", // api 的 base_url
+  baseURL: "http://localhost:8081/", // api 的 base_url
   timeout: 5000 // request timeout
 })
+
 
 service.interceptors.request.use(
   config => {
