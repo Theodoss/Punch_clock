@@ -116,6 +116,9 @@
     store,
     data: () => ({
       drawer: null,
+      //新增日程
+      todos: [],
+      
       addEvent: {
         userId: undefined,
         title: '',

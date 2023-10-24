@@ -6,6 +6,7 @@
         </div>
         <v-divider ></v-divider>
         <FullCalendar
+    
           :header="{
             right: 'dayGridMonth,timeGridWeek,timeGridDay'
           }"
@@ -32,7 +33,8 @@
           @eventDrop="eventDrop"
           @eventRender="eventRender"
           @eventClick="eventClick"
-          :events="events"
+          :events="allEvents"
+          
         />
         <v-layout row justify-center>
           <v-dialog v-model="scheduleAddDialog" persistent max-width="600px">
@@ -43,10 +45,10 @@
               <v-card-text>
                 <v-layout wrap>
                   <v-flex xs12 sm6 md4>
-                    <v-text-field label="行程名" v-model="addEvent.title"></v-text-field>
+                    <v-text-field label="journey name" v-model="addEvent.title"></v-text-field>
                   </v-flex>
                   <v-flex xs12 sm6 md4>
-                    <v-text-field label="描述(可选)" v-model="addEvent.description"></v-text-field>
+                    <v-text-field label="Describtion(optional)" v-model="addEvent.description"></v-text-field>
                   </v-flex>
                   <v-flex xs12 sm6 md4>
                     <el-date-picker
@@ -56,7 +58,7 @@
                       type="datetime"
                       value-format="yyyy-MM-dd HH:mm"
                       :default-time="['00:00:00', '00:00:00']">
-                      placeholder="选择开始时间">
+                      placeholder="ChoseBegintime">
                     </el-date-picker>
                   </v-flex>
                   <v-flex xs12 sm6 md4 style="margin-top: 10px;">
@@ -67,13 +69,13 @@
                       type="datetime"
                       value-format="yyyy-MM-dd HH:mm"
                       :default-time="['00:00:00', '00:00:00']">
-                      placeholder="选择结束时间">
+                      placeholder="Chose end time">
                     </el-date-picker>
                   </v-flex>
                   <v-flex xs12 sm6 md4>
                     <v-checkbox
                       v-model="addEvent.isPrivateBoolean"
-                      label="是否为私人行程"
+                      label="Is it private?"
                       required
                     ></v-checkbox>
                   </v-flex>
@@ -112,18 +114,18 @@
 
                     <v-list>
                       <v-list-tile @click="updateEvents()">
-                      <v-list-tile-title>编辑</v-list-tile-title>
+                      <v-list-tile-title>Editing</v-list-tile-title>
                     </v-list-tile>
                       <v-list-tile @click="deleteEvent(clickedEvent.id)">
-                        <v-list-tile-title>删除</v-list-tile-title>
+                        <v-list-tile-title>Delete</v-list-tile-title>
                       </v-list-tile>
                     </v-list>
                   </v-menu>
                 </v-card-title>
-                <v-card-text><strong>开始时间：</strong>{{clickedEvent.start}}</v-card-text>
-                <v-card-text><strong>结束时间：</strong>{{clickedEvent.end}}</v-card-text>
-                <v-card-text><strong>描述：</strong>{{clickedEvent.description}}</v-card-text>
-                <v-card-text><strong>私人行程：</strong>{{clickedEvent.isPrivate==0?'否':'是'}}</v-card-text>
+                <v-card-text><strong>Begintime</strong>{{clickedEvent.start}}</v-card-text>
+                <v-card-text><strong>Endtime</strong>{{clickedEvent.end}}</v-card-text>
+                <v-card-text><strong>Discribtion</strong>{{clickedEvent.description}}</v-card-text>
+                <v-card-text><strong>Is Private</strong>{{clickedEvent.isPrivate==0?'否':'是'}}</v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn color="blue darken-1" flat @click="showEvent = false">Close</v-btn>
@@ -151,6 +153,8 @@ export default{
   inject:['reload'],
   data(){
     return{
+      //新增 todos
+      todos: [],
       headline: '',
       events: [],
       pickBeginDate: '',
@@ -224,9 +228,21 @@ export default{
       this.addEvent.isPrivateBoolean=(this.clickedEvent.isPrivate==1?true:false)
       this.headline='更新'
     },
-    handleDateClick(arg) {
-      console.log(arg.date)
+
+    computed: {
+    allEvents() {
+    return this.events.concat(this.todos);
+    }
     },
+
+    //新增handleclick todo
+    handleDateClick(arg) {
+    const newTodo = {
+      title: 'Theo', // 或者您希望的名字
+      start: arg.dateStr
+    };
+    this.todos.push(newTodo);
+  },
     eventResize: function(info) {
       Object.assign(this.clickedEvent,this.resetClickedEvent)
       console.log(info.event.id)
@@ -402,6 +418,56 @@ export default{
 
 h2 {
   font-size: 15px !important;
+}
+
+/* 按钮样式 */
+.v-btn {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: all 0.3s;
+  &:hover {
+    background-color: #e0e0e0;
+  }
+}
+
+/* 增加日曆外观的对比度和颜色 */
+.v-content {
+  // background-color: #f5f5f5;
+  background-color: #5555f5;
+  padding: 20px; // added padding
+}
+
+.v-btn {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: all 0.3s;
+  color: #333; // added color
+  &:hover {
+    background-color: #e0e0e0;
+    color: #000; // darkened text on hover
+  }
+}
+
+/* 输入框样式 */
+.v-text-field input {
+  border: 1px solid #ccc !important;
+  border-radius: 5px !important;
+  padding: 5px 10px !important; // added padding
+}
+
+/* 日曆事件样式 */
+.fc-event {
+  border-radius: 5px;
+  border: none;
+  color: #fff; // make text white for better contrast
+}
+
+/* 对话框样式 */
+.v-dialog {
+  .v-card {
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
 }
 </style>
 
